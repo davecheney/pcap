@@ -1,15 +1,11 @@
 package pcap
 
 import (
-  "io"
-  "os"
-  )
+	"io"
+	"os"
+)
 
 type PacketReader interface {
-  ReadPacket() (*Packet, os.Error) 
-  io.Closer
+	ReadPacket() (*Capture, os.Error)
+	io.Closer
 }
-
-type Packet struct { }
-
-
