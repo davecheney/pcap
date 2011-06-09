@@ -40,8 +40,8 @@ func (r *reader) Close() os.Error {
 	return nil // TODO(dfc)
 }
 
-func ioctl(fd int, request uintptr, argp uintptr) os.Error {
-      _, _, errorp := syscall.Syscall(syscall.SYS_IOCTL, uintptr(fd), uintptr(request), argp)
+func ioctl(fd int, request, argp uintptr) os.Error {
+      _, _, errorp := syscall.Syscall(syscall.SYS_IOCTL, uintptr(fd), request, argp)
      return os.NewSyscallError("ioctl", int(errorp))
 }
 
