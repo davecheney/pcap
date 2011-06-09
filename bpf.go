@@ -40,6 +40,10 @@ func (r *reader) Close() os.Error {
 	return nil // TODO(dfc)
 }
 
+func ioctl(fd int, request uintptr, argp uintptr) os.Error {
+      _, _, errorp := syscall.Syscall(syscall.SYS_IOCTL, uintptr(fd), uintptr(request), argp)
+     return os.NewSyscallError("ioctl", int(errorp))
+}
 
 func Open() (PacketReader, os.Error) {
 	fd, e := syscall.Open(device, os.O_RDONLY|syscall.O_CLOEXEC, 0666)
@@ -49,24 +53,24 @@ func Open() (PacketReader, os.Error) {
 	var data [16]byte
 	data[0] = 'e'
 	data[1] = 'n'
-	data[2] = '1'
+	data[2] = '0'
 
 	var len uint32
 	var immediate uint32 = 1
 	var promisc uint32 = 1
-	if err := os.NewSyscallError("ioctl", syscall.Ioctl(fd, syscall.BIOCGBLEN, uintptr(unsafe.Pointer(&len)))); err != nil {
+	if err := ioctl(fd, syscall.BIOCGBLEN, uintptr(unsafe.Pointer(&len))); err != nil {
 		return nil, err
 	}
-	if err := os.NewSyscallError("ioctl", syscall.Ioctl(fd, syscall.BIOCSBLEN, uintptr(unsafe.Pointer(&len)))); err != nil {
+	if err := ioctl(fd, syscall.BIOCSBLEN, uintptr(unsafe.Pointer(&len))); err != nil {
 		return nil, err
 	}
-	if err := os.NewSyscallError("ioctl", syscall.Ioctl(fd, syscall.BIOCIMMEDIATE, uintptr(unsafe.Pointer(&immediate)))); err != nil {
+	if err := ioctl(fd, syscall.BIOCIMMEDIATE, uintptr(unsafe.Pointer(&immediate))); err != nil {
 		return nil, err
 	}
-	if err := os.NewSyscallError("ioctl", syscall.Ioctl(fd, syscall.BIOCSETIF, uintptr(unsafe.Pointer(&data[0])))); err != nil {
+	if err := ioctl(fd, syscall.BIOCSETIF, uintptr(unsafe.Pointer(&data[0]))); err != nil {
 		return nil, err
 	}
-	if err := os.NewSyscallError("ioctl", syscall.Ioctl(fd, syscall.BIOCPROMISC, uintptr(unsafe.Pointer(&promisc)))); err != nil {
+	if err := ioctl(fd, syscall.BIOCPROMISC, uintptr(unsafe.Pointer(&promisc))); err != nil {
 		return nil, err
 	}
 	return &reader{fd, int(len)}, nil
