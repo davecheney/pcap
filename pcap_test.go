@@ -4,16 +4,11 @@ import (
 	"testing"
 )
 
-func TestOnePacket(t *testing.T) {
-	pcap, err := Open()
+func TestReadPcapFile(t *testing.T) {
+	pcap, err := Open("testdata/snmp.pcap")
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
-	defer pcap.Close()
-        frame, err := pcap.ReadPacket()
-	if err != nil {
-		t.Fatal(err)
-	}
-        src, dest, f, payload := Decode(frame.payload)
-        t.Logf("%s %s %#04x %#v", src, dest, f, payload)
+	fhdr, _ := pcap.(*PcapFile)
+	t.Log(fhdr.hdr)	
 }
