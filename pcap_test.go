@@ -9,6 +9,7 @@ func TestReadPcapFile(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	defer pcap.Close()
 	fhdr, _ := pcap.(*PcapFile)
 	t.Log(fhdr.hdr)	
 }

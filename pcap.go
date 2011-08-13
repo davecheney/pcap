@@ -22,7 +22,7 @@ func (pcap *PcapFile) readFileHeader() (os.Error) {
 }
 
 func (h FileHeader) String() string {
-	return fmt.Sprintf("Version: %d.%d, Snaplen: %d", h.Major, h.Minor, h.Snaplen)
+	return fmt.Sprintf("Magic: %x, Version: %d.%d, Snaplen: %d", h.Magic, h.Major, h.Minor, h.Snaplen)
 }
 
 func Open(file string) (PacketReader, os.Error) {
