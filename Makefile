@@ -19,7 +19,7 @@ GOFILES+=$(GOFILES_$(GOOS))
 
 GOFILES+=$(GOFILES_$(GOARCH))
 
-CLEAN_FILES+=ztypes_*.go
+CLEANFILES+=ztypes_*.go
 
 include $(GOROOT)/src/Make.pkg
 
