@@ -2,9 +2,10 @@ package pcap
 
 import (
 	"io"
+	"os"
 )
 
 type PacketReader interface {
-	//	ReadPacket() (*Capture, os.Error)
+	ReadPacket() (*PacketHeader, []byte, os.Error)
 	io.Closer
 }
