@@ -5,6 +5,7 @@ GOFILES=\
 	ethernet.go\
 	mac.go\
 	pcap.go\
+	file.go\
 
 GOFILES_darwin=\
 	bpf.go\
