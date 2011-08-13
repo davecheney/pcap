@@ -11,5 +11,5 @@ func TestReadPcapFile(t *testing.T) {
 	}
 	defer pcap.Close()
 	fhdr, _ := pcap.(*PcapFile)
-	t.Log(fhdr.hdr)	
+	t.Log(fhdr.hdr)
 }

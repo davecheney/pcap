@@ -9,11 +9,11 @@ import (
 
 type PcapFile struct {
 	io.ReadCloser
-	hdr	FileHeader
+	hdr FileHeader
 }
 
-func (pcap *PcapFile) readFileHeader() (os.Error) {
-	return binary.Read(pcap.ReadCloser, binary.LittleEndian, &pcap.hdr) 
+func (pcap *PcapFile) readFileHeader() os.Error {
+	return binary.Read(pcap.ReadCloser, binary.LittleEndian, &pcap.hdr)
 }
 
 func (h FileHeader) String() string {
@@ -25,7 +25,7 @@ func Open(file string) (PacketReader, os.Error) {
 	if err != nil {
 		return nil, err
 	}
-	pcap := &PcapFile{ io.ReadCloser: r }
+	pcap := &PcapFile{io.ReadCloser: r}
 	err = pcap.readFileHeader()
 	if err != nil {
 		return nil, err

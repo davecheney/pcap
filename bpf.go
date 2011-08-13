@@ -41,8 +41,8 @@ func (r *reader) Close() os.Error {
 }
 
 func ioctl(fd int, request, argp uintptr) os.Error {
-      _, _, errorp := syscall.Syscall(syscall.SYS_IOCTL, uintptr(fd), request, argp)
-     return os.NewSyscallError("ioctl", int(errorp))
+	_, _, errorp := syscall.Syscall(syscall.SYS_IOCTL, uintptr(fd), request, argp)
+	return os.NewSyscallError("ioctl", int(errorp))
 }
 
 func Open() (PacketReader, os.Error) {

@@ -5,6 +5,6 @@ import (
 )
 
 type PacketReader interface {
-//	ReadPacket() (*Capture, os.Error)
+	//	ReadPacket() (*Capture, os.Error)
 	io.Closer
 }
