@@ -21,15 +21,19 @@ type capture struct {
 	data	[]byte
 }
 
-func (c *capture) Payload() Frame {
-	return nil
+func (c *capture) Frame() (Frame, os.Error) {
+	return parseEthernet(c.data)
+}
+
+func (c *capture) String() string {
+	return fmt.Sprintf("capture: payload=%d", c.hdr.Caplen)
 }
 
 func (c *capture) Body() []byte {
 	return c.data
 }
 
-func (pcap *PcapFile) ReadPacket() (Capture, os.Error) {
+func (pcap *PcapFile) ReadCapture() (Capture, os.Error) {
 	var capture = new(capture)
 	if err := binary.Read(pcap.ReadCloser, binary.LittleEndian, &capture.hdr) ; err != nil {
 		return nil, err

@@ -6,16 +6,20 @@ import (
 )
 
 type Capture interface {
-	Payload() Frame
+	Frame() (Frame, os.Error)
 	Body() []byte
 	
 }
 
 type Frame interface {
-	
+	Payload() (Packet, os.Error)
+}
+
+type Packet interface {
+	Data() []byte
 }
 
 type PacketReader interface {
-	ReadPacket() (Capture, os.Error)
+	ReadCapture() (Capture, os.Error)
 	io.Closer
 }

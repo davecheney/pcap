@@ -5,6 +5,7 @@ GOFILES=\
 	ethernet.go\
 	mac.go\
 	pcap.go\
+	udp.go\
 	file.go\
 
 GOFILES_darwin=\
