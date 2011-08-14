@@ -4,6 +4,8 @@ TARG=github.com/davecheney/pcap
 GOFILES=\
 	capture.go\
 	ethernet.go\
+	frame.go\
+	ip.go\
 	mac.go\
 	pcap.go\
 	udp.go\

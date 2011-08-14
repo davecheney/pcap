@@ -4,14 +4,19 @@ import (
 	"os"
 )
 
-type udpPacket struct {
-	data []byte
+type UDPHeader struct {
+
 }
 
-func (u *udpPacket) Data() []byte {
-	return u.data
+type Datagram struct {
+	header UDPHeader
+	payload	[]byte
 }
 
-func parseUDP(data []byte) (Packet, os.Error) {
-	return &udpPacket{data}, nil
-}	
+func ParseUDP(ip IPPacket) (*Datagram, os.Error) {
+	data := ip.Payload()
+	return &Datagram {
+		payload: data[20:],
+	}, nil
+
+}

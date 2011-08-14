@@ -23,10 +23,15 @@ func TestReadPcapFile(t *testing.T) {
 			t.Fatal(err)
 		}
 		t.Log(capture)
-		frame, err := capture.Frame()
+		frame, err := ParseEthernetFrame(capture)
 		if err != nil {
 			t.Fatal(err)
 		}
 		t.Log(frame)
+		packet, err := ParseIP(frame)
+		if err != nil {
+			t.Fatal(err)
+		}
+		t.Log(packet)
 	}
 }
