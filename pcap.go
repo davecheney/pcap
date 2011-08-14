@@ -5,12 +5,6 @@ import (
 	"os"
 )
 
-type Capture interface {
-	Frame() (Frame, os.Error)
-	Body() []byte
-	
-}
-
 type Frame interface {
 	Payload() (Packet, os.Error)
 }

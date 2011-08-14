@@ -2,6 +2,7 @@ include $(GOROOT)/src/Make.inc
 
 TARG=github.com/davecheney/pcap
 GOFILES=\
+	capture.go\
 	ethernet.go\
 	mac.go\
 	pcap.go\

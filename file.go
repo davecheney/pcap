@@ -18,19 +18,15 @@ func (pcap *PcapFile) readFileHeader() os.Error {
 
 type capture struct {
 	hdr PacketHeader
-	data	[]byte
-}
-
-func (c *capture) Frame() (Frame, os.Error) {
-	return parseEthernet(c.data)
+	payload	[]byte
 }
 
 func (c *capture) String() string {
 	return fmt.Sprintf("capture: payload=%d", c.hdr.Caplen)
 }
 
-func (c *capture) Body() []byte {
-	return c.data
+func (c *capture) Payload() []byte {
+	return c.payload
 }
 
 func (pcap *PcapFile) ReadCapture() (Capture, os.Error) {
@@ -38,8 +34,8 @@ func (pcap *PcapFile) ReadCapture() (Capture, os.Error) {
 	if err := binary.Read(pcap.ReadCloser, binary.LittleEndian, &capture.hdr) ; err != nil {
 		return nil, err
 	}
-	capture.data = make([]byte, capture.hdr.Caplen)
-	_, err := pcap.ReadCloser.Read(capture.data)
+	capture.payload = make([]byte, capture.hdr.Caplen)
+	_, err := pcap.ReadCloser.Read(capture.payload)
 	return capture, err
 }
 
