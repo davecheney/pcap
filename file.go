@@ -16,14 +16,27 @@ func (pcap *PcapFile) readFileHeader() os.Error {
 	return binary.Read(pcap.ReadCloser, binary.LittleEndian, &pcap.hdr)
 }
 
-func (pcap *PcapFile) ReadPacket() (*PacketHeader, []byte, os.Error) {
-	var hdr = new(PacketHeader)
-	if err := binary.Read(pcap.ReadCloser, binary.LittleEndian, hdr) ; err != nil {
-		return nil, nil, err
+type capture struct {
+	hdr PacketHeader
+	data	[]byte
+}
+
+func (c *capture) Payload() Frame {
+	return nil
+}
+
+func (c *capture) Body() []byte {
+	return c.data
+}
+
+func (pcap *PcapFile) ReadPacket() (Capture, os.Error) {
+	var capture = new(capture)
+	if err := binary.Read(pcap.ReadCloser, binary.LittleEndian, &capture.hdr) ; err != nil {
+		return nil, err
 	}
-	data := make([]byte, hdr.Caplen)
-	_, err := pcap.ReadCloser.Read(data)	
-	return hdr, data, err
+	capture.data = make([]byte, capture.hdr.Caplen)
+	_, err := pcap.ReadCloser.Read(capture.data)
+	return capture, err
 }
 
 func (h FileHeader) String() string {

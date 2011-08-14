@@ -5,7 +5,17 @@ import (
 	"os"
 )
 
+type Capture interface {
+	Payload() Frame
+	Body() []byte
+	
+}
+
+type Frame interface {
+	
+}
+
 type PacketReader interface {
-	ReadPacket() (*PacketHeader, []byte, os.Error)
+	ReadPacket() (Capture, os.Error)
 	io.Closer
 }
