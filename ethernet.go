@@ -8,28 +8,19 @@ import (
 
 func ParseEthernetFrame(p Packet) (Frame, os.Error) {
 	data := p.Payload()
-	etherType := binary.LittleEndian.Uint16(data[13:15])
-	//length := int(binary.LittleEndian.Uint16(data[15:17]))
 	return &EthernetFrame{ 
-		header: ethernetHeader{
-			dest: data[0:6],
-			src: data[6:13],
-			ethertype: etherType,
-		}, 
+		header: data[:17],
 		payload: data[17:],
 	 }, nil
 }
 
-type ethernetHeader struct {
-	dest []byte
-	src []byte
-	vlan int
-	ethertype uint16
+type EthernetFrame struct {
+	header []byte
+	payload []byte
 }
 
-type EthernetFrame struct {
-	header ethernetHeader
-	payload []byte
+func (e *EthernetFrame) Header() []byte {
+	return e.header
 }
 
 func (e *EthernetFrame) Payload() []byte {
@@ -37,7 +28,7 @@ func (e *EthernetFrame) Payload() []byte {
 }
 
 func (e *EthernetFrame) Ethertype() uint16 {
-	return e.header.ethertype
+	return binary.LittleEndian.Uint16(e.header[15:17])
 }
 
 func (e *EthernetFrame) String() string {
