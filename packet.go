@@ -1,5 +1,5 @@
 package pcap
 
-type Capture interface {
+type Packet interface {
 	Payload() []byte
 }

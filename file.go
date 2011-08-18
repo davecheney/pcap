@@ -29,7 +29,7 @@ func (c *capture) Payload() []byte {
 	return c.payload
 }
 
-func (pcap *PcapFile) ReadCapture() (Capture, os.Error) {
+func (pcap *PcapFile) ReadPacket() (Packet, os.Error) {
 	var capture = new(capture)
 	if err := binary.Read(pcap.ReadCloser, binary.LittleEndian, &capture.hdr) ; err != nil {
 		return nil, err

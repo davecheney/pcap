@@ -6,8 +6,8 @@ import (
 	"os"
 )
 
-func ParseEthernetFrame(c Capture) (Frame, os.Error) {
-	data := c.Payload()
+func ParseEthernetFrame(p Packet) (Frame, os.Error) {
+	data := p.Payload()
 	etherType := binary.LittleEndian.Uint16(data[13:15])
 	//length := int(binary.LittleEndian.Uint16(data[15:17]))
 	return &EthernetFrame{ 

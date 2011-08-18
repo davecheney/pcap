@@ -5,11 +5,7 @@ import (
 	"os"
 )
 
-type Packet interface {
-	Data() []byte
-}
-
 type PacketReader interface {
-	ReadCapture() (Capture, os.Error)
+	ReadPacket() (Packet, os.Error)
 	io.Closer
 }
