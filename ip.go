@@ -6,16 +6,17 @@ import (
 )
 
 type IPPacket interface {
+	Header() []byte
 	Payload() []byte	
 }
 
-type IPv4Header struct {
-
+type IPv4Packet struct {
+	header []byte
+	payload []byte
 }
 
-type IPv4Packet struct {
-	header IPv4Header
-	payload []byte
+func (ip *IPv4Packet) Header() []byte {
+	return ip.header
 }
 
 func (ip *IPv4Packet) Payload() []byte {
@@ -30,6 +31,7 @@ func ParseIP(frame Frame) (IPPacket, os.Error) {
 	data := frame.Payload()
 	ihl := (data[0] & 0xf) << 2
 	return &IPv4Packet {
+		header: data[:ihl],
 		payload: data[ihl:],
 	}, nil
 }
