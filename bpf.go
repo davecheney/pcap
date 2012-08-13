@@ -1,3 +1,5 @@
+// +build darwin freebsd netbsd openbsd
+
 package pcap
 
 import (
@@ -20,7 +22,7 @@ type Capture struct {
 	payload []byte
 }
 
-func (r *reader) ReadPacket() (*Capture, os.Error) {
+func (r *reader) ReadPacket() (*Capture, error) {
 	buf := make([]byte, r.buflen)
 	n, e := syscall.Read(r.fd, buf)
 	if e != 0 {
@@ -35,17 +37,17 @@ func (r *reader) ReadPacket() (*Capture, os.Error) {
 	return capture, nil
 }
 
-func (r *reader) Close() os.Error {
+func (r *reader) Close() error {
 	syscall.Close(r.fd)
 	return nil // TODO(dfc)
 }
 
-func ioctl(fd int, request, argp uintptr) os.Error {
+func ioctl(fd int, request, argp uintptr) error {
 	_, _, errorp := syscall.Syscall(syscall.SYS_IOCTL, uintptr(fd), request, argp)
 	return os.NewSyscallError("ioctl", int(errorp))
 }
 
-func Open() (PacketReader, os.Error) {
+func Open() (PacketReader, error) {
 	fd, e := syscall.Open(device, os.O_RDONLY|syscall.O_CLOEXEC, 0666)
 	if e != 0 {
 		return nil, &os.PathError{"open", device, os.Errno(e)}
