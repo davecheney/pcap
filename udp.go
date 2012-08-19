@@ -1,21 +1,16 @@
 package pcap
 
-import (
-	"os"
-)
-
 type UDPHeader struct {
-
 }
 
 type Datagram struct {
-	header UDPHeader
-	payload	[]byte
+	header  UDPHeader
+	payload []byte
 }
 
-func ParseUDP(ip IPPacket) (*Datagram, os.Error) {
+func ParseUDP(ip IPPacket) (*Datagram, error) {
 	data := ip.Payload()
-	return &Datagram {
+	return &Datagram{
 		payload: data[20:],
 	}, nil
 

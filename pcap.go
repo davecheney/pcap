@@ -1,11 +1,8 @@
 package pcap
 
-import (
-	"io"
-	"os"
-)
+import "io"
 
 type PacketReader interface {
-	ReadPacket() (Packet, os.Error)
+	ReadPacket() (Packet, error)
 	io.Closer
 }

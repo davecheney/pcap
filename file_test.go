@@ -1,8 +1,8 @@
 package pcap
 
 import (
+	"io"
 	"testing"
-	"os"
 )
 
 func TestReadPcapFile(t *testing.T) {
@@ -13,11 +13,11 @@ func TestReadPcapFile(t *testing.T) {
 	defer pcap.Close()
 	fhdr, _ := pcap.(*PcapFile)
 	t.Log(fhdr.hdr)
-	
+
 	for {
 		capture, err := pcap.ReadCapture()
 		if err != nil {
-			if err == os.EOF {
+			if err == io.EOF {
 				return
 			}
 			t.Fatal(err)

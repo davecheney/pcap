@@ -1,10 +1,10 @@
 package pcap
 
 import (
+	"encoding/binary"
 	"fmt"
 	"io"
 	"os"
-	"encoding/binary"
 )
 
 type PcapFile struct {
@@ -12,13 +12,13 @@ type PcapFile struct {
 	hdr FileHeader
 }
 
-func (pcap *PcapFile) readFileHeader() os.Error {
+func (pcap *PcapFile) readFileHeader() error {
 	return binary.Read(pcap.ReadCloser, binary.LittleEndian, &pcap.hdr)
 }
 
 type capture struct {
-	hdr PacketHeader
-	payload	[]byte
+	hdr     PacketHeader
+	payload []byte
 }
 
 func (c *capture) String() string {
@@ -29,9 +29,9 @@ func (c *capture) Payload() []byte {
 	return c.payload
 }
 
-func (pcap *PcapFile) ReadPacket() (Packet, os.Error) {
+func (pcap *PcapFile) ReadPacket() (Packet, error) {
 	var capture = new(capture)
-	if err := binary.Read(pcap.ReadCloser, binary.LittleEndian, &capture.hdr) ; err != nil {
+	if err := binary.Read(pcap.ReadCloser, binary.LittleEndian, &capture.hdr); err != nil {
 		return nil, err
 	}
 	capture.payload = make([]byte, capture.hdr.Caplen)
@@ -43,7 +43,7 @@ func (h FileHeader) String() string {
 	return fmt.Sprintf("Magic: %x, Version: %d.%d, Snaplen: %d", h.Magic, h.Major, h.Minor, h.Snaplen)
 }
 
-func Open(file string) (PacketReader, os.Error) {
+func Open(file string) (PacketReader, error) {
 	r, err := os.Open(file)
 	if err != nil {
 		return nil, err

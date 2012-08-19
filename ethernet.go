@@ -3,19 +3,18 @@ package pcap
 import (
 	"encoding/binary"
 	"fmt"
-	"os"
 )
 
-func ParseEthernetFrame(p Packet) (Frame, os.Error) {
+func ParseEthernetFrame(p Packet) (Frame, error) {
 	data := p.Payload()
-	return &EthernetFrame{ 
-		header: data[:17],
+	return &EthernetFrame{
+		header:  data[:17],
 		payload: data[17:],
-	 }, nil
+	}, nil
 }
 
 type EthernetFrame struct {
-	header []byte
+	header  []byte
 	payload []byte
 }
 
